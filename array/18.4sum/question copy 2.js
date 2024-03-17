@@ -25,30 +25,32 @@
  * @return {number[][]}
  */
 var fourSum = function (nums, target) {
-  const asc = nums.sort((a,b) => a - b)
-  const sumtarget = (nums, n, start,target) => {
+  const asc = nums.sort((a, b) => a - b)
+  const sumTarget = (nums, n, start, target) => {
     let size = nums.length
     let res = []
     if (n < 2 || size < n) return res
-    if(n == 2) {
-      let left = start, right = size -1
-      while(left < right) {
-        const lv = nums[left], rv = nums[right]
-        const sum = lv + rv
-        if(sum == target) {
-          res.push([lv, rv])
-          while(left < right && nums[left] == lv) left++
-          while(left < right && nums[right] == rv) right--
+    if (n == 2) {
+      let left = start,
+        right = size - 1
+      while (left < right) {
+        const sum = nums[left] + nums[right]
+        const leftvalue = nums[left],
+          rightvalue = nums[right]
+        if (sum == target) {
+          res.push([leftvalue, rightvalue])
+          while (left < right && nums[right] == rightvalue) right--
+          while (left < right && nums[left] == leftvalue) left++
         } else if (sum > target) {
-          while(left < right && nums[right] == rv) right--
-        } else if(sum < target) {
-          while(left < right && nums[left] == lv) left ++
+          while (left < right && nums[right] == rightvalue) right--
+        } else if (sum < target) {
+          while (left < right && nums[left] == leftvalue) left++
         }
       }
     } else {
-      for(let i = start; i<size; i++) {
-        const curl = sumtarget(nums, n - 1, i + 1, target - nums[i])
-        for(let arr of curl) {
+      for (let i = start; i < size; i++) {
+        const sub = sumTarget(nums, n - 1, i + 1, target - nums[i])
+        for (let arr of sub) {
           arr.push(nums[i])
           res.push(arr)
         }
@@ -57,7 +59,7 @@ var fourSum = function (nums, target) {
     }
     return res
   }
-  return sumtarget(nums, 4, 0, target)
+  return sumTarget(asc, 4, 0, target)
 }
 
 /**
